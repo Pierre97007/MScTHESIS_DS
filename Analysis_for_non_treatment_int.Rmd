@@ -1,0 +1,62 @@
+---
+title: "Grouped Patients nt inteval"
+output: html_notebook
+date: "2024-05-22"
+---
+
+## R Markdown
+
+This is the Rcode used to analyze the Growth rate during Non-Treatment Interval. This is both used for the Total Tumor volume as for the Individual lesion dataset.
+
+```{r}
+# importing the tumgr library
+library(tumgr) 
+# Reading in the reading the Total tumor volume or (individual lesions) during non-treatment intervals for patients 
+data <- read.csv('Volume csv created in python') 
+
+# Assuming 'date_column' is the name of your character column containing dates 
+data$Case.Date.Start <- as.Date(data$Case.Date.Start, format = "%Y-%m-%d") 
+
+# numeric date since 1970 to quantify the dates
+data$Case.Date.Start <- as.numeric(data$Case.Date.Start) 
+
+colnames(data) <- c("name", "date", "size") #changing the column names to the appropriate names
+data
+```
+
+```{r}
+# generate some sample plots 
+par(mfrow=c(2, 3))
+# using the gdrate on a (slice of the data, with the standard 0.10)
+out <- gdrate(data[1:59, ], 0.10, TRUE) 
+par(mfrow=c(1, 1))
+```
+
+```{r}
+# using the gdrate for the whole data
+out <- gdrate(data, 0.10, FALSE)  
+# summary of cases 
+out$models  
+#descriptive statistics 
+out$sumstats 
+out$results
+```
+
+```{r}
+# Extract 'g' values from 'out'
+g_values <- out$results$g
+
+# Create histogram
+hist(g_values, main = "Histogram of 'g' Values", xlab = "g Values")
+```
+
+```{r}
+# Create a csv file containing the growth rates during Non-treatment interval
+write.csv(out$results, file = "results_totalliver_nt.csv", row.names = FALSE)
+```
+
+```{r}
+```
+
+```         
+```
