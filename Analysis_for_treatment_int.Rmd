@@ -31,7 +31,6 @@ out <- gdrate(data[1:59, ], 0.10, TRUE)
 par(mfrow=c(1, 1))
 ```
 
-on the toolbar or by pressing *Ctrl+Alt+I*.
 
 ```{r}
 # Using the gdrate function for the whole data
